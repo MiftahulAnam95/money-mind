@@ -14,28 +14,26 @@
   <style>
     :root {
       --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-      --bg-color: #F8F8FC;
-      --surface-color: #FFFFFF;
-      --primary: #7566F1;
-      --primary-hover: #6252DE;
-      --text-heading: #24233A;
-      --text-secondary: #85849A;
-      --success: #22A879;
-      --danger: #EF6474;
-      --warning: #F5A623;
-      --border-color: #EAE9F2;
-    }
-    body.dark {
-      --bg-color: #12111D;
-      --surface-color: #1C1B2A;
-      --text-heading: #F3F3F7;
-      --text-secondary: #A09EB5;
-      --border-color: #2D2B3F;
+      --bg-color: #0a0a14;
+      --surface-color: rgba(30, 28, 50, 0.65);
+      --primary: #a78bfa;
+      --primary-hover: #c4b5fd;
+      --text-heading: #f0f0ff;
+      --text-secondary: #b0aabf;
+      --success: #34d399;
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --border-color: rgba(168, 162, 240, 0.12);
     }
     body {
       font-family: var(--font-inter);
       background-color: var(--bg-color);
       color: var(--text-heading);
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(167, 139, 250, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(192, 132, 252, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(52, 211, 153, 0.06) 0%, transparent 60%);
+      background-attachment: fixed;
     }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
@@ -56,16 +54,47 @@
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* Glassmorphism cards */
+    .glass-card {
+      background: rgba(30, 28, 50, 0.55);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border: 1px solid rgba(168, 162, 240, 0.12);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    /* Neon button glow */
+    .neon-btn {
+      box-shadow: 0 0 12px rgba(167, 139, 250, 0.35), 0 4px 12px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    .neon-btn:hover {
+      box-shadow: 0 0 24px rgba(167, 139, 250, 0.6), 0 6px 18px rgba(0,0,0,0.5);
+      transform: translateY(-1px);
+    }
+    /* Neon text glow */
+    .neon-text {
+      text-shadow: 0 0 8px rgba(167, 139, 250, 0.35);
+    }
+    /* Glass input */
+    .glass-input {
+      background: rgba(10, 10, 20, 0.6);
+      border: 1px solid rgba(168, 162, 240, 0.15);
+      backdrop-filter: blur(8px);
+    }
+    .glass-input:focus {
+      border-color: rgba(167, 139, 250, 0.5);
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row antialiased transition-colors duration-200">
+<body class="dark min-h-screen flex flex-col md:flex-row antialiased transition-colors duration-200">
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- MODAL / DIALOG BACKDROP -->
   <div id="modalOverlay" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 hidden items-center justify-center p-4 transition-opacity duration-200">
-    <div id="modalContainer" class="bg-[var(--surface-color)] rounded-2xl border border-[var(--border-color)] shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto custom-scroll relative">
+    <div id="modalContainer" class="glass-card rounded-2xl border border-[var(--border-color)] shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto custom-scroll relative">
       <!-- Modal Header -->
       <div class="flex items-center justify-between pb-4 border-b border-[var(--border-color)]">
         <h3 id="modalTitle" class="text-lg font-bold text-[var(--text-heading)]">Judul Modal</h3>
@@ -82,7 +111,7 @@
 
   <!-- CONFIRMATION DIALOG -->
   <div id="confirmOverlay" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
-    <div class="bg-[var(--surface-color)] rounded-2xl border border-[var(--border-color)] shadow-xl w-full max-w-sm p-6 text-center">
+    <div class="glass-card rounded-2xl border border-[var(--border-color)] shadow-xl w-full max-w-sm p-6 text-center">
       <div id="confirmIconWrapper" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-4 bg-red-100 text-[#EF6474]">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
       </div>
@@ -96,7 +125,7 @@
   </div>
 
   <!-- SIDEBAR (DESKTOP) -->
-  <aside id="sidebar" class="hidden md:flex flex-col w-64 bg-[var(--surface-color)] border-r border-[var(--border-color)] h-screen sticky top-0 z-30 transition-all select-none">
+  <aside id="sidebar" class="hidden md:flex flex-col w-64 glass-card border-r border-[var(--border-color)] h-screen sticky top-0 z-30 transition-all select-none">
     <!-- Brand Logo -->
     <div class="p-6 flex items-center gap-3 border-b border-[var(--border-color)]">
       <div class="w-10 h-10 rounded-xl bg-[#7566F1] flex items-center justify-center text-white font-bold shadow-md shadow-[#7566F1]/20">
@@ -142,7 +171,7 @@
     </nav>
 
     <!-- Student Project UAS Badge -->
-    <div class="p-4 mx-4 mb-4 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+    <div class="p-4 mx-4 mb-4 rounded-xl glass-input border border-[var(--border-color)]">
       <div class="flex items-center justify-between mb-1">
         <span class="text-[10px] font-bold uppercase tracking-wider text-[#7566F1]">Proyek UAS SI</span>
         <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-semibold">Ready</span>
@@ -154,11 +183,11 @@
   <!-- MAIN WRAPPER -->
   <div class="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
     <!-- TOP HEADER -->
-    <header class="bg-[var(--surface-color)] border-b border-[var(--border-color)] sticky top-0 z-20 px-4 sm:px-6 py-3.5">
+    <header class="glass-card border-b border-[var(--border-color)] sticky top-0 z-20 px-4 sm:px-6 py-3.5">
       <div class="flex items-center justify-between gap-4">
         <!-- Left: Greetings & Date -->
         <div>
-          <h2 id="userGreeting" class="text-base sm:text-lg font-bold text-[var(--text-heading)] flex items-center gap-2">
+          <h2 id="userGreeting" class="text-base sm:text-lg font-bold text-[var(--text-heading)] neon-text flex items-center gap-2">
             Halo, Mahasiswa! <span class="text-lg">👋</span>
           </h2>
           <p id="currentDateDisplay" class="text-xs text-[var(--text-secondary)]">Memuat tanggal...</p>
@@ -168,12 +197,12 @@
         <div class="flex items-center gap-2 sm:gap-3">
           <!-- Quick Search input (opens Transactions search) -->
           <div class="relative hidden sm:block w-48 md:w-64">
-            <input id="quickSearchInput" type="text" placeholder="Cari transaksi..." class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-1.5 pl-9 text-xs sm:text-sm text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1] transition">
+            <input id="quickSearchInput" type="text" placeholder="Cari transaksi..." class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-1.5 pl-9 text-xs sm:text-sm text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1] transition">
             <svg class="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
 
           <!-- Add Transaction Button -->
-          <button id="quickAddTxBtn" type="button" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs sm:text-sm font-semibold shadow-sm transition active:scale-95 cursor-pointer">
+          <button id="quickAddTxBtn" type="button" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs sm:text-sm font-semibold shadow-sm transition active:scale-95 cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             <span class="hidden xs:inline">+ Transaksi</span>
             <span class="xs:hidden">Catat</span>
@@ -195,7 +224,7 @@
         <!-- 4 Summary Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Card 1: Saldo -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
             <div class="flex items-center justify-between text-xs text-[var(--text-secondary)] font-medium mb-2">
               <span>Saldo Saat Ini</span>
               <span class="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-[#7566F1]">
@@ -207,7 +236,7 @@
           </div>
 
           <!-- Card 2: Pemasukan Bulan Ini -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
             <div class="flex items-center justify-between text-xs text-[var(--text-secondary)] font-medium mb-2">
               <span id="labelIncomeMonth">Pemasukan Bulan Ini</span>
               <span class="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-[#22A879]">
@@ -219,7 +248,7 @@
           </div>
 
           <!-- Card 3: Pengeluaran Bulan Ini -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
             <div class="flex items-center justify-between text-xs text-[var(--text-secondary)] font-medium mb-2">
               <span id="labelExpenseMonth">Pengeluaran Bulan Ini</span>
               <span class="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-[#EF6474]">
@@ -231,7 +260,7 @@
           </div>
 
           <!-- Card 4: Sisa Anggaran Bulan Ini -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs relative overflow-hidden">
             <div class="flex items-center justify-between text-xs text-[var(--text-secondary)] font-medium mb-2">
               <span>Sisa Anggaran</span>
               <span class="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-[#F5A623]">
@@ -246,7 +275,7 @@
         <!-- Row: Chart & Insight -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- Expenses Donut/Bar Chart (2 cols) -->
-          <div class="lg:col-span-2 bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs">
+          <div class="lg:col-span-2 glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div>
                 <h3 class="text-base font-bold text-[var(--text-heading)]">Proporsi Pengeluaran</h3>
@@ -254,7 +283,7 @@
               </div>
               <!-- Period picker -->
               <div class="flex items-center gap-2">
-                <span id="dashChartPeriodLabel" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[var(--bg-color)] border border-[var(--border-color)] text-[var(--text-secondary)]">Bulan Ini</span>
+                <span id="dashChartPeriodLabel" class="text-xs font-semibold px-2.5 py-1 rounded-lg glass-input border border-[var(--border-color)] text-[var(--text-secondary)]">Bulan Ini</span>
               </div>
             </div>
 
@@ -279,7 +308,7 @@
           </div>
 
           <!-- Financial Insight Card (1 col) -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs flex flex-col justify-between">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs flex flex-col justify-between">
             <div>
               <div class="flex items-center gap-2 mb-3">
                 <span class="p-1.5 rounded-lg bg-purple-50 dark:bg-purple-950/40 text-[#7566F1]">
@@ -289,7 +318,7 @@
               </div>
 
               <!-- Dynamic Insight Content -->
-              <div id="dashInsightBox" class="p-4 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)] space-y-3">
+              <div id="dashInsightBox" class="p-4 rounded-xl glass-input border border-[var(--border-color)] space-y-3">
                 <p id="dashInsightText" class="text-xs leading-relaxed text-[var(--text-heading)]">
                   Menganalisis data transaksi Anda...
                 </p>
@@ -309,7 +338,7 @@
         <!-- Row: Recent Transactions & Active Savings Goals -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- Recent 5 Transactions (2 cols) -->
-          <div class="lg:col-span-2 bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs">
+          <div class="lg:col-span-2 glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs">
             <div class="flex items-center justify-between mb-4">
               <div>
                 <h3 class="text-base font-bold text-[var(--text-heading)]">Transaksi Terbaru</h3>
@@ -340,7 +369,7 @@
           </div>
 
           <!-- Active Goals Summary (1 col) -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs flex flex-col justify-between">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-4">
                 <div>
@@ -358,7 +387,7 @@
               </div>
             </div>
 
-            <button data-nav="goals" class="mt-4 w-full py-2 px-3 text-center rounded-xl bg-[var(--bg-color)] hover:bg-[#7566F1]/10 text-[#7566F1] border border-[var(--border-color)] text-xs font-semibold transition cursor-pointer">
+            <button data-nav="goals" class="mt-4 w-full py-2 px-3 text-center rounded-xl glass-input hover:bg-[#7566F1]/10 text-[#7566F1] border border-[var(--border-color)] text-xs font-semibold transition cursor-pointer">
               + Buat Target Tabungan Baru
             </button>
           </div>
@@ -374,11 +403,11 @@
             <p class="text-xs text-[var(--text-secondary)]">Kelola seluruh riwayat pemasukan dan pengeluaran Anda</p>
           </div>
           <div class="flex items-center gap-2">
-            <button id="exportCsvBtn" type="button" class="px-3.5 py-2 rounded-xl bg-[var(--surface-color)] border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)] hover:bg-black/5 transition flex items-center gap-1.5 cursor-pointer" title="Ekspor data ke file CSV">
+            <button id="exportCsvBtn" type="button" class="px-3.5 py-2 rounded-xl glass-card border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)] hover:bg-black/5 transition flex items-center gap-1.5 cursor-pointer" title="Ekspor data ke file CSV">
               <svg class="w-4 h-4 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
               Ekspor CSV
             </button>
-            <button id="openAddTxModalBtn" type="button" class="px-4 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer flex items-center gap-1.5">
+            <button id="openAddTxModalBtn" type="button" class="px-4 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer flex items-center gap-1.5">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
               Tambah Transaksi
             </button>
@@ -386,17 +415,17 @@
         </div>
 
         <!-- Filter & Search Controls -->
-        <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)] shadow-xs space-y-3">
+        <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)] shadow-xs space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
             <!-- Search Keyword -->
             <div class="relative">
-              <input id="txFilterSearch" type="text" placeholder="Cari nama / catatan..." class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 pl-9 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="txFilterSearch" type="text" placeholder="Cari nama / catatan..." class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 pl-9 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <svg class="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
             <!-- Type Filter -->
             <div>
-              <select id="txFilterType" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <select id="txFilterType" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 <option value="all">Semua Jenis (Semua)</option>
                 <option value="income">Pemasukan Saja</option>
                 <option value="expense">Pengeluaran Saja</option>
@@ -405,7 +434,7 @@
 
             <!-- Category Filter -->
             <div>
-              <select id="txFilterCategory" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <select id="txFilterCategory" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 <option value="all">Semua Kategori</option>
                 <!-- Filled dynamically by JS based on available categories -->
               </select>
@@ -413,7 +442,7 @@
 
             <!-- Month Filter -->
             <div>
-              <select id="txFilterMonth" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <select id="txFilterMonth" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 <option value="all">Semua Bulan</option>
                 <!-- Filled dynamically -->
               </select>
@@ -424,7 +453,7 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-[var(--border-color)]">
             <div class="flex items-center gap-2">
               <span class="text-[11px] text-[var(--text-secondary)]">Urutkan:</span>
-              <select id="txSortBy" class="bg-[var(--bg-color)] border border-[var(--border-color)] rounded-lg px-2 py-1 text-xs text-[var(--text-heading)]">
+              <select id="txSortBy" class="glass-input border border-[var(--border-color)] rounded-lg px-2 py-1 text-xs text-[var(--text-heading)]">
                 <option value="date-desc">Tanggal Terbaru</option>
                 <option value="date-asc">Tanggal Terlama</option>
                 <option value="amount-desc">Nominal Terbesar</option>
@@ -442,10 +471,10 @@
         </div>
 
         <!-- Transactions Table -->
-        <div class="bg-[var(--surface-color)] rounded-2xl border border-[var(--border-color)] shadow-xs overflow-hidden">
+        <div class="glass-card rounded-2xl border border-[var(--border-color)] shadow-xs overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-[var(--bg-color)] text-[var(--text-secondary)] border-b border-[var(--border-color)]">
+              <thead class="glass-input text-[var(--text-secondary)] border-b border-[var(--border-color)]">
                 <tr>
                   <th class="py-3 px-4 font-semibold">Tanggal</th>
                   <th class="py-3 px-4 font-semibold">Transaksi</th>
@@ -482,10 +511,10 @@
             <p class="text-xs text-[var(--text-secondary)]">Tetapkan batas pengeluaran per kategori agar uang saku tidak cepat habis</p>
           </div>
           <div class="flex items-center gap-3">
-            <select id="budgetMonthSelect" class="bg-[var(--surface-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs font-semibold text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+            <select id="budgetMonthSelect" class="glass-card border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs font-semibold text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <!-- Month-Year choices -->
             </select>
-            <button id="openSetBudgetModalBtn" type="button" class="px-4 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer flex items-center gap-1.5">
+            <button id="openSetBudgetModalBtn" type="button" class="px-4 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer flex items-center gap-1.5">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
               Atur Anggaran
             </button>
@@ -494,17 +523,17 @@
 
         <!-- Overview Header Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)]">
             <span class="text-xs text-[var(--text-secondary)] font-medium">Total Anggaran Ditetapkan</span>
             <div id="budgetTotalAssigned" class="text-xl font-bold text-[var(--text-heading)] mt-1">Rp0</div>
             <p class="text-[11px] text-[var(--text-secondary)] mt-0.5">Batas maksimal bulan ini</p>
           </div>
-          <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)]">
             <span class="text-xs text-[var(--text-secondary)] font-medium">Realisasi Pengeluaran Tercover</span>
             <div id="budgetTotalSpent" class="text-xl font-bold text-[#EF6474] mt-1">Rp0</div>
             <p id="budgetOverallUsagePct" class="text-[11px] text-[var(--text-secondary)] mt-0.5">0% terpakai</p>
           </div>
-          <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)]">
             <span class="text-xs text-[var(--text-secondary)] font-medium">Sisa Batas Aman</span>
             <div id="budgetTotalRemaining" class="text-xl font-bold text-emerald-600 mt-1">Rp0</div>
             <p id="budgetGlobalStatus" class="text-[11px] text-emerald-600 font-semibold mt-0.5">Aman</p>
@@ -512,7 +541,7 @@
         </div>
 
         <!-- Category Budget Cards List -->
-        <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)]">
+        <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)]">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-base font-bold text-[var(--text-heading)]">Rincian Anggaran Kategori</h3>
             <span class="text-xs text-[var(--text-secondary)]">Otomatis sinkron dengan transaksi yang dicatat</span>
@@ -531,7 +560,7 @@
             <h2 class="text-xl font-bold text-[var(--text-heading)]">Tujuan Tabungan</h2>
             <p class="text-xs text-[var(--text-secondary)]">Simulasi alokasi tabungan untuk laptop kuliah, liburan, atau dana darurat</p>
           </div>
-          <button id="openAddGoalModalBtn" type="button" class="px-4 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer flex items-center gap-1.5 self-start sm:self-auto">
+          <button id="openAddGoalModalBtn" type="button" class="px-4 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer flex items-center gap-1.5 self-start sm:self-auto">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Tambah Target Baru
           </button>
@@ -551,7 +580,7 @@
         </div>
 
         <!-- Empty State for Goals -->
-        <div id="goalsEmptyState" class="hidden bg-[var(--surface-color)] p-10 rounded-2xl border border-[var(--border-color)] text-center flex-col items-center justify-center">
+        <div id="goalsEmptyState" class="hidden glass-card p-10 rounded-2xl border border-[var(--border-color)] text-center flex-col items-center justify-center">
           <div class="w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-950/40 text-[#7566F1] flex items-center justify-center mb-3">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           </div>
@@ -573,7 +602,7 @@
           <!-- Period Selector -->
           <div class="flex items-center gap-2">
             <span class="text-xs text-[var(--text-secondary)]">Rentang:</span>
-            <select id="statsPeriodSelect" class="bg-[var(--surface-color)] border border-[var(--border-color)] rounded-xl px-3 py-1.5 text-xs font-semibold text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+            <select id="statsPeriodSelect" class="glass-card border border-[var(--border-color)] rounded-xl px-3 py-1.5 text-xs font-semibold text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <option value="this-month">Bulan Ini</option>
               <option value="last-month">Bulan Sebelumnya</option>
               <option value="this-year">Tahun Ini</option>
@@ -584,17 +613,17 @@
 
         <!-- 3 KPI Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)]">
             <span class="text-xs text-[var(--text-secondary)] font-medium">Pemasukan Periode Ini</span>
             <div id="statsIncomeTotal" class="text-xl font-bold text-[#22A879] mt-1">Rp0</div>
             <p id="statsIncomeSub" class="text-[11px] text-[var(--text-secondary)] mt-0.5">0 transaksi</p>
           </div>
-          <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)]">
             <span class="text-xs text-[var(--text-secondary)] font-medium">Pengeluaran Periode Ini</span>
             <div id="statsExpenseTotal" class="text-xl font-bold text-[#EF6474] mt-1">Rp0</div>
             <p id="statsExpenseSub" class="text-[11px] text-[var(--text-secondary)] mt-0.5">0 transaksi</p>
           </div>
-          <div class="bg-[var(--surface-color)] p-4 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-4 rounded-2xl border border-[var(--border-color)]">
             <span class="text-xs text-[var(--text-secondary)] font-medium">Net Tabungan (Selisih)</span>
             <div id="statsNetDifference" class="text-xl font-bold text-[var(--text-heading)] mt-1">Rp0</div>
             <p id="statsNetRate" class="text-[11px] text-[var(--text-secondary)] mt-0.5">0% rasio hemat</p>
@@ -604,7 +633,7 @@
         <!-- Category Distribution and Top Expenses -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Category Bar Breakdown -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)]">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)]">
             <h3 class="text-base font-bold text-[var(--text-heading)] mb-1">Rincian Pengeluaran per Kategori</h3>
             <p class="text-xs text-[var(--text-secondary)] mb-4">Urutan pengeluaran dari nominal terbesar ke terkecil</p>
             <div id="statsCategoryBars" class="space-y-3">
@@ -613,25 +642,25 @@
           </div>
 
           <!-- Top Expenses & Monthly Comparison -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] flex flex-col justify-between">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] flex flex-col justify-between">
             <div>
               <h3 class="text-base font-bold text-[var(--text-heading)] mb-1">Highlight Finansial</h3>
               <p class="text-xs text-[var(--text-secondary)] mb-4">Evaluasi pengeluaran Anda pada periode ini</p>
 
               <div class="space-y-3">
-                <div class="p-3.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+                <div class="p-3.5 rounded-xl glass-input border border-[var(--border-color)]">
                   <span class="text-[11px] text-[var(--text-secondary)] uppercase tracking-wider font-bold">Kategori Terboros</span>
                   <div id="statsTopCategoryName" class="text-base font-bold text-[var(--text-heading)] mt-0.5">-</div>
                   <p id="statsTopCategoryDetail" class="text-xs text-[var(--text-secondary)] mt-0.5">Belum ada pengeluaran</p>
                 </div>
 
-                <div class="p-3.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+                <div class="p-3.5 rounded-xl glass-input border border-[var(--border-color)]">
                   <span class="text-[11px] text-[var(--text-secondary)] uppercase tracking-wider font-bold">Rata-Rata Transaksi Harian</span>
                   <div id="statsDailyAverage" class="text-base font-bold text-[var(--text-heading)] mt-0.5">Rp0</div>
                   <p id="statsDailyAvgDetail" class="text-xs text-[var(--text-secondary)] mt-0.5">Dihitung dari hari dalam periode aktif</p>
                 </div>
 
-                <div class="p-3.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+                <div class="p-3.5 rounded-xl glass-input border border-[var(--border-color)]">
                   <span class="text-[11px] text-[var(--text-secondary)] uppercase tracking-wider font-bold">Kondisi Budget</span>
                   <div id="statsBudgetHealth" class="text-base font-bold text-emerald-600 mt-0.5">Terkendali</div>
                   <p id="statsBudgetHealthDesc" class="text-xs text-[var(--text-secondary)] mt-0.5">Pengeluaran berada dalam batas anggaran</p>
@@ -657,17 +686,17 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Profile & Appearance -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] space-y-4">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] space-y-4">
             <h3 class="text-base font-bold text-[var(--text-heading)]">Profil Mahasiswa</h3>
 
             <div>
               <label for="settingUserName" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Nama Mahasiswa</label>
-              <input id="settingUserName" type="text" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="settingUserName" type="text" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
             </div>
 
             <div>
               <label for="settingCampus" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Program Studi / Kampus</label>
-              <input id="settingCampus" type="text" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="settingCampus" type="text" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
             </div>
 
             <div class="pt-2">
@@ -693,10 +722,10 @@
           </div>
 
           <!-- Data Management (Backup, Restore, Reset) -->
-          <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] space-y-4">
+          <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] space-y-4">
             <h3 class="text-base font-bold text-[var(--text-heading)]">Penyimpanan & Cadangan Data</h3>
             
-            <div class="p-3.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)] text-xs text-[var(--text-secondary)]">
+            <div class="p-3.5 rounded-xl glass-input border border-[var(--border-color)] text-xs text-[var(--text-secondary)]">
               🔒 <strong>Privasi & Keamanan:</strong> Data disimpan di browser pada perangkat ini (LocalStorage). Data tidak otomatis tersinkronisasi dengan perangkat lain dan tidak ada data perbankan sensitif yang direkam.
             </div>
 
@@ -706,7 +735,7 @@
                   <div class="text-xs font-bold text-[var(--text-heading)]">Ekspor Cadangan (JSON)</div>
                   <div class="text-[11px] text-[var(--text-secondary)]">Unduh seluruh transaksi, budget, & target tabungan</div>
                 </div>
-                <button id="exportJsonBtn" type="button" class="px-3 py-1.5 rounded-lg bg-[var(--bg-color)] border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)] hover:bg-black/5 transition cursor-pointer">
+                <button id="exportJsonBtn" type="button" class="px-3 py-1.5 rounded-lg glass-input border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)] hover:bg-black/5 transition cursor-pointer">
                   Ekspor JSON
                 </button>
               </div>
@@ -718,7 +747,7 @@
                 </div>
                 <div>
                   <input id="importJsonInput" type="file" accept=".json" class="hidden">
-                  <button id="triggerImportBtn" type="button" class="px-3 py-1.5 rounded-lg bg-[var(--bg-color)] border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)] hover:bg-black/5 transition cursor-pointer">
+                  <button id="triggerImportBtn" type="button" class="px-3 py-1.5 rounded-lg glass-input border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)] hover:bg-black/5 transition cursor-pointer">
                     Pilih File
                   </button>
                 </div>
@@ -748,21 +777,21 @@
         </div>
 
         <!-- Project UAS Info Accordion / Card -->
-        <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)]">
+        <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)]">
           <h3 class="text-sm font-bold text-[var(--text-heading)] mb-2">Tentang Proyek UAS MoneyMind</h3>
           <p class="text-xs text-[var(--text-secondary)] leading-relaxed mb-3">
             Aplikasi ini dirancang sebagai proyek akhir semester (UAS) mata kuliah Pemrograman Web / Sistem Informasi. Dibangun menggunakan arsitektur Vanilla JavaScript murni, CSS responsif, dan LocalStorage client-side sehingga 100% siap di-deploy langsung pada GitHub Pages.
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div class="p-2.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+            <div class="p-2.5 rounded-xl glass-input border border-[var(--border-color)]">
               <span class="font-bold text-[#7566F1]">Anggota 1</span>
               <p class="text-[var(--text-secondary)] mt-0.5">Transaksi & Logika Finansial</p>
             </div>
-            <div class="p-2.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+            <div class="p-2.5 rounded-xl glass-input border border-[var(--border-color)]">
               <span class="font-bold text-[#7566F1]">Anggota 2</span>
               <p class="text-[var(--text-secondary)] mt-0.5">UI/UX & Desain Responsif</p>
             </div>
-            <div class="p-2.5 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+            <div class="p-2.5 rounded-xl glass-input border border-[var(--border-color)]">
               <span class="font-bold text-[#7566F1]">Anggota 3</span>
               <p class="text-[var(--text-secondary)] mt-0.5">Anggaran, Tabungan & Pengujian</p>
             </div>
@@ -774,7 +803,7 @@
   </div>
 
   <!-- MOBILE BOTTOM NAVIGATION (Gen Z App Feel, Fixed at Bottom) -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--surface-color)] border-t border-[var(--border-color)] z-30 px-2 py-1.5 flex items-center justify-around shadow-lg">
+  <div class="md:hidden fixed bottom-0 left-0 right-0 glass-card border-t border-[var(--border-color)] z-30 px-2 py-1.5 flex items-center justify-around shadow-lg">
     <button data-nav="dashboard" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded-lg text-xs font-medium text-[#7566F1]">
       <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
       <span class="text-[10px]">Home</span>
@@ -1539,7 +1568,7 @@
           const isDone = current >= target;
 
           html += `
-            <div class="p-3 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)]">
+            <div class="p-3 rounded-xl glass-input border border-[var(--border-color)]">
               <div class="flex items-center justify-between text-xs mb-1.5">
                 <div class="flex items-center gap-1.5 font-bold text-[var(--text-heading)] truncate">
                   <span>${goal.icon || '🎯'}</span>
@@ -1738,7 +1767,7 @@
             <!-- Type Toggle -->
             <div>
               <label class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Jenis Transaksi</label>
-              <div class="grid grid-cols-2 gap-2 p-1 bg-[var(--bg-color)] rounded-xl border border-[var(--border-color)]">
+              <div class="grid grid-cols-2 gap-2 p-1 glass-input rounded-xl border border-[var(--border-color)]">
                 <button type="button" id="btnTypeExpense" class="py-2 text-xs font-bold rounded-lg transition-all ${defaultType === 'expense' ? 'bg-[#EF6474] text-white shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-heading)]'}">
                   Pengeluaran
                 </button>
@@ -1752,7 +1781,7 @@
             <!-- Title -->
             <div>
               <label for="formTxTitle" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Nama Transaksi <span class="text-rose-500">*</span></label>
-              <input id="formTxTitle" type="text" required placeholder="Contoh: Nasi Padang, Print Tugas, Uang Saku" value="${escapeHtml(defaultTitle)}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="formTxTitle" type="text" required placeholder="Contoh: Nasi Padang, Print Tugas, Uang Saku" value="${escapeHtml(defaultTitle)}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <p id="errTxTitle" class="text-[11px] text-rose-500 hidden mt-1">Nama transaksi tidak boleh kosong.</p>
             </div>
 
@@ -1760,20 +1789,20 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label for="formTxAmount" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Nominal (Rp) <span class="text-rose-500">*</span></label>
-                <input id="formTxAmount" type="number" min="1" step="500" required placeholder="25000" value="${defaultAmount}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+                <input id="formTxAmount" type="number" min="1" step="500" required placeholder="25000" value="${defaultAmount}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 <p id="errTxAmount" class="text-[11px] text-rose-500 hidden mt-1">Nominal harus angka lebih besar dari 0.</p>
               </div>
 
               <div>
                 <label for="formTxDate" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Tanggal <span class="text-rose-500">*</span></label>
-                <input id="formTxDate" type="date" required value="${defaultDate}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+                <input id="formTxDate" type="date" required value="${defaultDate}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               </div>
             </div>
 
             <!-- Category -->
             <div>
               <label for="formTxCategory" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Kategori <span class="text-rose-500">*</span></label>
-              <select id="formTxCategory" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <select id="formTxCategory" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 <!-- Injected via helper -->
               </select>
             </div>
@@ -1781,7 +1810,7 @@
             <!-- Notes -->
             <div>
               <label for="formTxNotes" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Catatan Tambahan (Opsional)</label>
-              <input id="formTxNotes" type="text" placeholder="Detail keperluan atau lokasi..." value="${escapeHtml(defaultNotes)}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="formTxNotes" type="text" placeholder="Detail keperluan atau lokasi..." value="${escapeHtml(defaultNotes)}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
             </div>
 
             <!-- Action buttons -->
@@ -1789,7 +1818,7 @@
               <button type="button" onclick="MoneyMindApp.closeModal()" class="px-4 py-2 rounded-xl border border-[var(--border-color)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-black/5 transition cursor-pointer">
                 Batal
               </button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
+              <button type="submit" class="px-5 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
                 ${isEdit ? 'Simpan Perubahan' : 'Catat Transaksi'}
               </button>
             </div>
@@ -1991,7 +2020,7 @@
           }
 
           html += `
-            <div class="p-4 rounded-xl bg-[var(--bg-color)] border border-[var(--border-color)] flex flex-col justify-between">
+            <div class="p-4 rounded-xl glass-input border border-[var(--border-color)] flex flex-col justify-between">
               <div>
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center gap-2">
@@ -2048,21 +2077,21 @@
           <form id="budgetConfigForm" class="space-y-4">
             <div>
               <label class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Periode Anggaran</label>
-              <div class="p-2.5 bg-[var(--bg-color)] rounded-xl border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)]">
+              <div class="p-2.5 glass-input rounded-xl border border-[var(--border-color)] text-xs font-semibold text-[var(--text-heading)]">
                 Bulan: ${activeYM}
               </div>
             </div>
 
             <div>
               <label for="formBudgetCategory" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Kategori Pengeluaran</label>
-              <select id="formBudgetCategory" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <select id="formBudgetCategory" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 ${catSelectOptions}
               </select>
             </div>
 
             <div>
               <label for="formBudgetAmount" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Batas Maksimal Anggaran (Rp)</label>
-              <input id="formBudgetAmount" type="number" min="0" step="5000" placeholder="Contoh: 500000" value="${initialAmount || ''}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="formBudgetAmount" type="number" min="0" step="5000" placeholder="Contoh: 500000" value="${initialAmount || ''}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <p class="text-[11px] text-[var(--text-secondary)] mt-1">Masukkan 0 jika ingin menghapus anggaran untuk kategori ini.</p>
             </div>
 
@@ -2070,7 +2099,7 @@
               <button type="button" onclick="MoneyMindApp.closeModal()" class="px-4 py-2 rounded-xl border border-[var(--border-color)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-black/5 transition cursor-pointer">
                 Batal
               </button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
+              <button type="submit" class="px-5 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
                 Simpan Anggaran
               </button>
             </div>
@@ -2127,7 +2156,7 @@
           const isReached = current >= target;
 
           html += `
-            <div class="bg-[var(--surface-color)] p-5 rounded-2xl border border-[var(--border-color)] shadow-xs flex flex-col justify-between">
+            <div class="glass-card p-5 rounded-2xl border border-[var(--border-color)] shadow-xs flex flex-col justify-between">
               <div>
                 <div class="flex items-start justify-between gap-2 mb-3">
                   <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-[#7566F1] flex items-center justify-center text-xl flex-shrink-0">
@@ -2177,7 +2206,7 @@
                 <button onclick="MoneyMindApp.modifyGoalAmount('${goal.id}', 'withdraw')" class="py-1.5 px-2 rounded-xl border border-[var(--border-color)] hover:bg-black/5 text-[11px] font-semibold text-[var(--text-heading)] transition cursor-pointer text-center">
                   - Kurangi Dana
                 </button>
-                <button onclick="MoneyMindApp.modifyGoalAmount('${goal.id}', 'deposit')" class="py-1.5 px-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-[11px] font-semibold transition cursor-pointer text-center shadow-xs">
+                <button onclick="MoneyMindApp.modifyGoalAmount('${goal.id}', 'deposit')" class="py-1.5 px-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-[11px] font-semibold transition cursor-pointer text-center shadow-xs">
                   + Tabung Dana
                 </button>
               </div>
@@ -2217,33 +2246,33 @@
 
             <div>
               <label for="formGoalName" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Nama Target Tabungan <span class="text-rose-500">*</span></label>
-              <input id="formGoalName" type="text" required placeholder="Contoh: Laptop Kuliah, Liburan Semester" value="${goal ? escapeHtml(goal.name) : ''}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="formGoalName" type="text" required placeholder="Contoh: Laptop Kuliah, Liburan Semester" value="${goal ? escapeHtml(goal.name) : ''}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <p id="errGoalName" class="text-[11px] text-rose-500 hidden mt-1">Nama target wajib diisi.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label for="formGoalTarget" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Target Nominal (Rp) <span class="text-rose-500">*</span></label>
-                <input id="formGoalTarget" type="number" min="1000" step="5000" required placeholder="5000000" value="${goal ? goal.targetAmount : ''}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+                <input id="formGoalTarget" type="number" min="1000" step="5000" required placeholder="5000000" value="${goal ? goal.targetAmount : ''}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
                 <p id="errGoalTarget" class="text-[11px] text-rose-500 hidden mt-1">Nominal target harus lebih besar dari 0.</p>
               </div>
 
               <div>
                 <label for="formGoalCurrent" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Saldo Awal Terkumpul (Rp)</label>
-                <input id="formGoalCurrent" type="number" min="0" step="5000" placeholder="0" value="${goal ? goal.currentAmount : '0'}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+                <input id="formGoalCurrent" type="number" min="0" step="5000" placeholder="0" value="${goal ? goal.currentAmount : '0'}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               </div>
             </div>
 
             <div>
               <label for="formGoalDate" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">Target Tanggal Selesai (Opsional)</label>
-              <input id="formGoalDate" type="date" value="${goal ? (goal.targetDate || '') : ''}" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="formGoalDate" type="date" value="${goal ? (goal.targetDate || '') : ''}" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
             </div>
 
             <div class="flex items-center justify-end gap-2 pt-3 border-t border-[var(--border-color)]">
               <button type="button" onclick="MoneyMindApp.closeModal()" class="px-4 py-2 rounded-xl border border-[var(--border-color)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-black/5 transition cursor-pointer">
                 Batal
               </button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
+              <button type="submit" class="px-5 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
                 ${isEdit ? 'Simpan Perubahan' : 'Buat Target'}
               </button>
             </div>
@@ -2332,7 +2361,7 @@
 
         const html = `
           <form id="goalModifyForm" class="space-y-4">
-            <div class="p-3 bg-[var(--bg-color)] rounded-xl border border-[var(--border-color)] text-xs">
+            <div class="p-3 glass-input rounded-xl border border-[var(--border-color)] text-xs">
               <div class="text-[var(--text-secondary)]">Saldo Tabungan Saat Ini:</div>
               <div class="text-base font-bold text-[var(--text-heading)] mt-0.5">${formatRupiah(goal.currentAmount)} / ${formatRupiah(goal.targetAmount)}</div>
             </div>
@@ -2341,7 +2370,7 @@
               <label for="formModAmount" class="block text-xs font-semibold text-[var(--text-heading)] mb-1">
                 Nominal yang Ingin ${isDeposit ? 'Disisihkan' : 'Ditarik'} (Rp) <span class="text-rose-500">*</span>
               </label>
-              <input id="formModAmount" type="number" min="1000" step="1000" required placeholder="50000" class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
+              <input id="formModAmount" type="number" min="1000" step="1000" required placeholder="50000" class="w-full glass-input border border-[var(--border-color)] rounded-xl px-3 py-2 text-xs text-[var(--text-heading)] focus:outline-none focus:border-[#7566F1]">
               <p id="errModAmount" class="text-[11px] text-rose-500 hidden mt-1"></p>
             </div>
 
@@ -2353,7 +2382,7 @@
               <button type="button" onclick="MoneyMindApp.closeModal()" class="px-4 py-2 rounded-xl border border-[var(--border-color)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-black/5 transition cursor-pointer">
                 Batal
               </button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-[#7566F1] hover:bg-[#6252DE] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
+              <button type="submit" class="px-5 py-2 rounded-xl neon-btn bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] text-white text-xs font-semibold transition cursor-pointer shadow-sm">
                 ${isDeposit ? 'Tambahkan Tabungan' : 'Tarik Alokasi'}
               </button>
             </div>
